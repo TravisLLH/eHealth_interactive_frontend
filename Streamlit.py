@@ -84,6 +84,8 @@ if __name__ == "__main__":
                             st.session_state.video_controller = VideoController(video_url)
                             st.session_state.last_video_command = None
                         # Do not set video_controller for other types to allow text alongside video
+                    else:
+                        st.session_state.video_controller = None
             except json.JSONDecodeError as e:
                 st.error(f"Error parsing message data: {e}")
 
