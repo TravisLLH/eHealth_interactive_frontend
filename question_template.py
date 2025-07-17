@@ -1,7 +1,7 @@
 import streamlit as st
 import base64
 
-def display_yes_no_question(title):
+def display_yes_no_question(content):
     """
     Displays a centered question with static Yes/No buttons.
     
@@ -32,7 +32,7 @@ def display_yes_no_question(title):
     }}
     </style>
     <div style="text-align: center;">
-        <h1>{title}</h1>
+        <h1>{content}</h1>
         <div>
             <span class="button yes">YES</span>
             <span class="button no">NO</span>
@@ -49,11 +49,11 @@ def get_base64_image(image_path):
     return base64.b64encode(data).decode()
 
 # Function to display the scale question with images
-def display_scale_question(question_text, min_value, max_value):
+def display_scale_question(content, min_value, max_value):
     # Start building the HTML content
     html_content = f"""
     <div style="text-align: center;">
-        <h1 style="margin-bottom: 30px;">{question_text}</h1>  <!-- Increased space below title -->
+        <h1 style="margin-bottom: 30px;">{content}</h1>  <!-- Increased space below title -->
         <div style="display: flex; justify-content: center; flex-wrap: wrap;">
     """
     
