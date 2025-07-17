@@ -1,4 +1,3 @@
-# filename: VideoController.py
 import streamlit as st
 from streamlit_elements import elements, media
 import uuid

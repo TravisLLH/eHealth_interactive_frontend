@@ -1,4 +1,3 @@
-# filename: flask_test.py
 from flask import Flask, request, jsonify
 import redis
 import json

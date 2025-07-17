@@ -1,4 +1,3 @@
-# filename: Streamlit.py
 import json
 import requests
 import redis
