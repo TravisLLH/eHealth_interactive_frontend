@@ -1,0 +1,67 @@
+QUESTIONNAIRE:
+  # background
+  language: "zh"
+  title: "eHealth 內在能力評估"
+
+  question:
+#      Cognitive Capacity: {
+      Cognitive Capability: {
+          "1. Do you forget where you put your belongings? (Yes/No)": "你有曾忘了把財物放在哪裡嗎？ (是/否)",
+          "2. Do you have problems recalling the names of your close friends? (Yes/No)": "你有曾忘了你相熟朋友的名字嗎？ (是/否)",
+          "3. Do you repeatedly forget what you intended to say during conversation? (Yes/No)": "談話期間，你有曾忘記自己想說的話嗎？ (是/否)",
+          "4. Do you have difficulty in finding the right word to express yourself? (Yes/No)": "你難於找到合適的詞語來表達自己的想法嗎？ (是/否)",
+          "5. Do you think that your memory is poorer when compared with others of similar age? (Yes/No)": "你是否認為與同輩相比，你的記憶力較差？ (是/否)"
+      }
+
+      Locomotor Capacity : {
+          "1. Do you have any difficulty walking up 10 steps without resting and without aids? (Yes/No)": "在沒有中途休息或助行用具協助下而行上十級樓梯，覺得有沒有困難？ (是/否)",
+          "2. Do you have any difficulty walking several hundred yards (500-600 meters) alone and without aids? (Yes/No)": "在沒有助行用具協助下不停步行5分鐘（約500-600米路程），覺得有沒有困難？ (是/否)"
+      }
+
+      Vitality : {
+          "1. Do you have more than 5% weight loss within the past 6 months? (Yes/No)": "過去6個月，體重有沒有出現明顯下降(大約 5%)？ (是/否)",
+          "2. How much difficulty do you have in lifting and carrying 10 pounds?": "提起和攜帶5公斤(10磅)東西對於你來講有幾困難？(例子：1袋5公斤的米) (是/否)"
+      }
+
+      Psychological Capacity : {
+          "1. Are you satisfied with your life (Yes/No)?": "你是否滿意自己的生活? (是/否)",
+          "2. Do you find purpose or meaning in your life? (Yes/No)": "你的生命是否有目標和意義? (是/否)",
+          "3. Are you happy with your life? (0-8, 0 = the most unhappy to 8 = the happiest)": "你對你的生活滿意嗎? (1-8, 1= 非常不開心 至 8 = 非常開心)"
+      }
+
+      Visual and Hearing Capacity : {
+          "1. Do you see things clearly? (1-6, 1 = very poor to 6 = very good)": "你看東西清晰嗎? (1-6, 1= 完全看不到 至 6 = 看得很好)",
+          "2. Do you hear things clearly? (1-6, 1 = very poor to 6 = very good)": "你聽得清楚嗎? (1-6, 1= 完全不清楚 至 6 = 非常清楚)"
+      }
+
+
+## Testing (Backup)
+#  question:
+#      Cognitive Capacity: {
+#          "Do you forget where you put your belongings?": "你有曾忘了把財物放在哪裡嗎？",
+#          "Do you have problems recalling the names of your close friends?": "你有曾忘了你相熟朋友的名字嗎？",
+#          "Do you repeatedly forget what you intended to say during conversation?": "談話期間，你有曾忘記自己想說的話嗎？",
+#          "Do you have difficulty in finding the right word to express yourself?": "你難於找到合適的詞語來表達自己的想法嗎？",
+#          "Do you think that your memory is poorer when compared with others of similar age?": "你是否認為與同輩相比，你的記憶力較差？"
+#      }
+#
+#      Locomotor Capacity : {
+#          "Do you have any difficulty walking up 10 steps without resting and without aids?": "在沒有中途休息或助行用具協助下而行上十級樓梯，覺得有沒有困難？",
+#          "Do you have any difficulty walking several hundred yards (500-600 meters) alone and without aids?": "在沒有助行用具協助下不停步行5分鐘（約500-600米路程），覺得有沒有困難？"
+#      }
+#
+#      Vitality : {
+#          "Do you have more than 5% weight loss within the past 6 months?": "過去6個月，體重有沒有出現明顯下降（大約 5%）？",
+#          "How much difﬁculty do you have in lifting and carrying 10 pounds?": "提起和攜帶5公斤(10磅)東西對於你來講有幾困難？(例子：1袋5公斤的米)"
+#      }
+#
+#      Psychological Capacity : {
+#          "Are you satisfied with your life?": "你是否滿意自己的生活?",
+#          "Do you find purpose or meaning in your life?": "你的生命是否有目標和意義?",
+#          "Are you happy with your life?": "你對你的生活滿意嗎?"
+#      }
+#
+#      Visual and Hearing Capacity : {
+#          "Do you see things clearly?": "你看東西清晰嗎?",
+#          "Do you hear things clearly?": "你聽得清楚嗎?"
+#      }

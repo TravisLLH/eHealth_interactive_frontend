@@ -1,0 +1,76 @@
+QUESTIONNAIRE:
+  # background
+  language: "en"
+  title: "eHealth Intrinsic Capacity Test"
+
+  question:
+#      Cognitive Capacity: {
+      Cognitive Capability: {
+          "1. Do you forget where you put your belongings? (Yes/No)": "Do you forget where you put your belongings? (Yes/No)",
+          "2. Do you have problems recalling the names of your close friends? (Yes/No)": "Do you have problems recalling the names of your close friends? (Yes/No)",
+          "3. Do you repeatedly forget what you intended to say during conversation? (Yes/No)": "Do you repeatedly forget what you intended to say during conversation? (Yes/No)",
+          "4. Do you have difficulty in finding the right word to express yourself? (Yes/No)": "Do you have difficulty in finding the right word to express yourself? (Yes/No)",
+          "5. Do you think that your memory is poorer when compared with others of similar age? (Yes/No)": "Do you think that your memory is poorer when compared with others of similar age? (Yes/No)"
+      }
+
+      Locomotor Capacity : {
+          "1. Do you have any difficulty walking up 10 steps without resting and without aids? (Yes/No)": "Do you have any difficulty walking up 10 steps without resting and without aids? (Yes/No)",
+          "2. Do you have any difficulty walking several hundred yards (500-600 meters) alone and without aids? (Yes/No)": "Do you have any difficulty walking several hundred yards (500-600 meters) alone and without aids? (Yes/No)"
+      }
+
+      # Vitality
+      Vitality : {
+          "1. Do you have more than 5% weight loss within the past 6 months? (Yes/No)": "Do you have more than 5% weight loss within the past 6 months? (Yes/No)",
+          "2. How much difficulty do you have in lifting and carrying 10 pounds?": "How much difficulty do you have in lifting and carrying 10 pounds?"
+      }
+
+      # Psychological capacity
+      Psychological Capacity : {
+          "1. Are you satisfied with your life (Yes/No)?": "Are you satisfied with your life? (Yes/No)",
+          "2. Do you find purpose or meaning in your life? (Yes/No)": "Do you find purpose or meaning in your life? (Yes/No)",
+          "3. Are you happy with your life? (0-8, 0 = the most unhappy to 8 = the happiest)": "Are you happy with your life? (0-8, 0 = the most unhappy to 8 = the happiest)"
+      }
+
+      # Visual and hearing capacity
+      Visual and Hearing Capacity : {
+          "1. Do you see things clearly? (1-6, 1 = very poor to 6 = very good)": "Do you see things clearly? (1-6, 1 = very poor to 6 = very good)",
+          "2. Do you hear things clearly? (1-6, 1 = very poor to 6 = very good)": "Do you hear things clearly? (1-6, 1 = very poor to 6 = very good)"
+      }
+
+
+
+
+## Testing (Backup)
+#  question:
+#      Cognitive Capacity: {
+#          "Do you forget where you put your belongings?": "Did you forget where you put your belongings?",
+#          "Do you have problems recalling the names of your close friends?": "Did you have problems recalling the names of your close friends?",
+#          "Do you repeatedly forget what you intended to say during conversation?": "Did you repeatedly forget what you intended to say during conversation?",
+#          "Do you have difficulty in finding the right word to express yourself?": "Did you have difficulty in finding the right word to express yourself?",
+#          "Do you think that your memory is poorer when compared with others of similar age?": "Did you think that your memory was poorer when compared with others of similar age?"
+#      }
+#
+#      Locomotor Capacity : {
+#          "Do you have any difficulty walking up 10 steps without resting and without aids?": "Do you have any difficulty walking up 10 steps without resting and without aids?",
+#          "Do you have any difficulty walking several hundred yards (500-600 meters) alone and without aids?": "Do you have any difficulty walking several hundred yards (500-600 meters) alone and without aids?"
+#      }
+#
+#      # Vitality
+#      Vitality : {
+#          "Do you have more than 5% weight loss within the past 6 months?": "Do you have more than 5% weight loss within the past 6 months?",
+#          "How much difﬁculty do you have in lifting and carrying 10 pounds?": "How much difﬁculty do you have in lifting and carrying 10 pounds?"
+#      }
+#
+#      # Psychological capacity
+#      Psychological Capacity : {
+#          "Are you satisfied with your life?": "Are you satisfied with your life?",
+#          "Do you find purpose or meaning in your life?": "Do you find purpose or meaning in your life?",
+#          "Are you happy with your life?": "Are you happy with your life?"
+#      }
+#
+#      # Visual and hearing capacity
+#      Visual and Hearing Capacity : {
+#          "Do you see things clearly?": "Do you see things clearly?",
+#          "Do you hear things clearly?": "Do you hear things clearly?"
+#      }
+
