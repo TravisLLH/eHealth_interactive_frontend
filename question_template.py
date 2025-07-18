@@ -1,12 +1,21 @@
 import streamlit as st
 import base64
 
+def display_plain_text(content):
+    html_content = f"""
+    <div style="text-align: center;">
+        <h1>{content}</h1>
+    </div>
+    """
+    st.markdown(html_content, unsafe_allow_html=True)
+
+
 def display_yes_no_question(content):
     """
     Displays a centered question with static Yes/No buttons.
     
     Parameters:
-    - title (str): The question to display, e.g., "Do you love apple?"
+    - content (str): The question to display
     """
     html_content = f"""
     <style>
