@@ -7,7 +7,10 @@ from Controller.VideoController import VideoController
 from question_template import display_yes_no_question, display_scale_question, display_plain_text
 from Config import config
 
-DEFAULT_DOMAIN = "http://localhost:5050/"
+# DEFAULT_DOMAIN = "http://localhost:5050/"
+DEFAULT_DOMAIN = "http://10.79.26.12:5050/"
+
+
 redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 st.set_page_config(layout="wide")
@@ -56,12 +59,13 @@ def display_question(response):
     qfmt = response.get('question_format')
     min_v = response.get('MIN')
     max_v = response.get('MAX')
+    order = response.get('order', 'ascending')
     language = response.get('language', st.session_state.language)
 
     if qfmt == "yes_no":
         display_yes_no_question(msg, language)
     elif qfmt == "scale":
-        display_scale_question(msg, min_v, max_v, language)
+        display_scale_question(msg, order, min_v, max_v, language)
     else:
         display_plain_text(msg)
 

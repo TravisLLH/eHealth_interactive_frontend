@@ -69,7 +69,7 @@ Purpose: Send different types of content (video, scale questions, yes/no questio
     "type": "text",
     "language": "en",     // en or zh
     "question_format": "scale",
-    "order": "descending",     // ascending or descending
+    "order": "ascending",     // ascending or descending; ascending (Red -> Green) and descending (Green -> Red)
     "MIN": 0,
     "MAX": 6,
     "message": "Do you see things clearly? (With wearing glasses or contact lens, if any)(0-5, 0 = very good to 5 = very poor)"

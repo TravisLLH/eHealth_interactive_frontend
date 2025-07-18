@@ -59,7 +59,12 @@ def display_yes_no_question(content, language='en'):
     st.markdown(html_content, unsafe_allow_html=True)
 
 # Function to display the scale question with images
-def display_scale_question(content, min_value, max_value, language='en'):
+def display_scale_question(content, order='ascending', min_value, max_value, language='en'):
+    if order == "descending":
+        ord = "desc"
+    elif order == "ascending": # Default to ascending if not specified (which means the color scale from Red to Green)
+        ord = "asc"
+
     # Start building the HTML content
     html_content = f"""
     <div style="text-align: center; margin-top: 250px; margin-left: 100px">
@@ -69,11 +74,11 @@ def display_scale_question(content, min_value, max_value, language='en'):
     
     # Loop through the range from min_value to max_value
     for i in range(min_value, max_value + 1):
-        image_path = f"images/scales/{i}.png"  # Assumes images are in the same directory
+        image_path = f"images/scales/{order}/{i}_{ord}.png"  # Assumes images are in the same directory
         base64_image = get_base64_image(image_path)
         # Add each image with button-like styling
         html_content += f'<img src="data:image/jpeg;base64,{base64_image}" style="width:80px; height:80px; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">'
-    
+
     # Close the HTML divs
     html_content += "</div></div>"
     
