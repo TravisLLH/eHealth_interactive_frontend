@@ -11,7 +11,7 @@ def get_base64_image(image_path):
 
 def display_plain_text(content):
     html_content = f"""
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-top: 250px; margin-left: 100px">
         <h1>{content}</h1>
     </div>
     """
@@ -48,7 +48,7 @@ def display_yes_no_question(content, language='en'):
         background-color: #6c757d;  /* Gray for No */
     }}
     </style>
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-top: 250px; margin-left: 100px">
         <h1>{content}</h1>
         <div>
             <span class="button yes">{translations['Yes'][language]}</span>
@@ -62,7 +62,7 @@ def display_yes_no_question(content, language='en'):
 def display_scale_question(content, min_value, max_value, language='en'):
     # Start building the HTML content
     html_content = f"""
-    <div style="text-align: center;">
+    <div style="text-align: center; margin-top: 250px; margin-left: 100px">
         <h1 style="margin-bottom: 30px;">{content}</h1>  <!-- Increased space below title -->
         <div style="display: flex; justify-content: center; flex-wrap: wrap;">
     """

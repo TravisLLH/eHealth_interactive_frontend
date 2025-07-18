@@ -21,7 +21,7 @@ class VideoController:
                 url=self.url,
                 playing=playing,
                 controls=True,
-                muted=False,   # <-- Set to True to allow autoplay
+                muted=False,   # Set to True to allow autoplay
                 width="100%",
-                height="400px"
+                height="700px"  # You can adjust this height as needed
             )

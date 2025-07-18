@@ -10,6 +10,8 @@ from Config import config
 DEFAULT_DOMAIN = "http://localhost:5050/"
 redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
+st.set_page_config(layout="wide")
+
 def send_session_id():
     session_id = st.session_state.user_id
     url = f"{st.session_state.domain}/post_session_id"
@@ -84,7 +86,6 @@ if __name__ == "__main__":
             except json.JSONDecodeError as e:
                 st.error(f"Error parsing message data: {e}")
 
-        # Always get the latest play state from Redis
         playing = False
         if st.session_state.video_controller:
             video_data = redis_client.get(f'video_command:{session_id}')
@@ -101,17 +102,14 @@ if __name__ == "__main__":
 
         if st.session_state.video_controller:
             if has_text:
-                col1, col2 = st.columns([2, 1])
+                col1, col2 = st.columns([3, 1])
                 with col1:
-                    st.session_state.video_controller.render(playing)
+                    # Set a fixed height for the video
+                    st.session_state.video_controller.render(playing)  # Default height in VideoController
                 with col2:
                     display_question(response)
             else:
                 st.session_state.video_controller.render(playing)
-            # Autoplay will work, but video is muted
-            if playing:
-                # st.info("The video is muted to allow autoplay. Please unmute the video to hear sound.")
-                pass
         elif has_text:
             display_question(response)
 
