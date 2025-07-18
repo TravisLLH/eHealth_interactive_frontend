@@ -145,23 +145,54 @@ Purpose: Programmatically set the session ID on the frontend, bypassing manual i
 <br>
 
 ## Troubleshooting
-Q: The Streamlit Frontend Loads the Previous Redis Cache (Last Session ID and Content)
+### Question 1: The Streamlit Frontend Loads the Previous Redis Cache (Last Session ID and Content)
 
 
-A: Clean the Redis server to remove historical content and reset the cache.
+**Answer:** Clean the Redis server to remove historical content and reset the cache.
 
 
-Step 1: Ensure the Redis server is running. If not, start it with:
+**Step 1:** Ensure the Redis server is running. If not, start it with:
 ```
 redis-server
 ```
 
-Step 2: Open a terminal and connect to the Redis CLI:
+**Step 2:** Open a terminal and connect to the Redis CLI:
 ```
 redis-cli
 ```
 
-Step 3: Run the following command to delete all keys from all databases:
+**Step 3:** Run the following command to delete all keys from all databases:
 ```
 flushall
 ```
+
+<br>
+
+### Question 2: Play OR Stop Command is not allow / does not work via the API `http://<flask_server_ip>/post_video_command`
+
+**Answer:** This issue occurs due to the **browser's autoplay policy**, which requires a high level of user engagement to allow video playback. We recommend using Firefox, as it permits autoplay (e.g., playing a video via the API) after adjusting specific browser settings.
+
+
+#### If You Are Using Chrome (Some Features Are Limited):
+>**Tradeoff 1**: You can pass the Session ID through the API `http://<flask_server_ip>/post_session_id`. However, you may not be able to play the video via the API `http://<flask_server_ip>/post_video_command`. 
+> <br>
+>
+>Chrome will block autoplay, causing the video stream to start and pause immediately. You will need to resume the video manually. After that, you can use the Video Control API without issues.
+>
+>**OR**
+>
+>**Tradeoff 2**: If you manually input the Session ID on the frontend, the API http://<flask_server_ip>/post_video_command should work without any issues.
+
+
+
+#### If You Are Using `Firefox`:
+
+> To enable autoplay for media with audio or video, follow these steps:
+>
+>**Step 1:** In the `Menu` bar at the top of the screen, click `Firefox` and then select `Preferences or Settings`, depending on your macOS version.
+>
+>**Step 2:** Select the `Privacy & Security` panel and go down to the `Permissions` section
+(or enter autoplay in the Find in Settings search box).
+>
+>**Reference Link:** https://support.mozilla.org/en-US/kb/block-autoplay
+
