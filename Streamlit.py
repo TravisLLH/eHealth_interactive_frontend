@@ -5,6 +5,7 @@ import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from Controller.VideoController import VideoController
 from question_template import display_yes_no_question, display_scale_question, display_plain_text
+from Config import config
 
 DEFAULT_DOMAIN = "http://localhost:5050/"
 redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
@@ -22,6 +23,7 @@ st.session_state.setdefault('user_id', None)
 st.session_state.setdefault('domain', DEFAULT_DOMAIN)
 st.session_state.setdefault('response', None)
 st.session_state.setdefault('video_controller', None)
+st.session_state.setdefault('language', config.language)
 
 current_session_id = redis_client.get('current_session_id')
 if current_session_id and current_session_id != st.session_state.user_id:
@@ -52,11 +54,12 @@ def display_question(response):
     qfmt = response.get('question_format')
     min_v = response.get('MIN')
     max_v = response.get('MAX')
+    language = response.get('language', st.session_state.language)
 
     if qfmt == "yes_no":
-        display_yes_no_question(msg)
+        display_yes_no_question(msg, language)
     elif qfmt == "scale":
-        display_scale_question(msg, min_v, max_v)
+        display_scale_question(msg, min_v, max_v, language)
     else:
         display_plain_text(msg)
 

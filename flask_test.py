@@ -28,6 +28,7 @@ def post_message():
     message_payload = {
         'session_id': session_id,
         'type': data.get('type'),
+        'language': data.get('language', 'en'),  # Default to English if not provided
         'question_format': data.get('question_format'),
         'order': data.get('order'),
         'MIN': data.get('MIN'),

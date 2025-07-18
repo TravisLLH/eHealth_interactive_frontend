@@ -1,5 +1,13 @@
 import streamlit as st
 import base64
+from translation import translations
+
+# Helper function to convert local images to base64
+def get_base64_image(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
 
 def display_plain_text(content):
     html_content = f"""
@@ -10,7 +18,7 @@ def display_plain_text(content):
     st.markdown(html_content, unsafe_allow_html=True)
 
 
-def display_yes_no_question(content):
+def display_yes_no_question(content, language='en'):
     """
     Displays a centered question with static Yes/No buttons.
     
@@ -43,22 +51,15 @@ def display_yes_no_question(content):
     <div style="text-align: center;">
         <h1>{content}</h1>
         <div>
-            <span class="button yes">YES</span>
-            <span class="button no">NO</span>
+            <span class="button yes">{translations['Yes'][language]}</span>
+            <span class="button no">{translations['No'][language]}</span>
         </div>
     </div>
     """
     st.markdown(html_content, unsafe_allow_html=True)
 
-
-# Helper function to convert local images to base64
-def get_base64_image(image_path):
-    with open(image_path, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
 # Function to display the scale question with images
-def display_scale_question(content, min_value, max_value):
+def display_scale_question(content, min_value, max_value, language='en'):
     # Start building the HTML content
     html_content = f"""
     <div style="text-align: center;">
