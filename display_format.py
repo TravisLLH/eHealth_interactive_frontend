@@ -9,6 +9,22 @@ from utils import get_base64_image
 #         data = f.read()
 #     return base64.b64encode(data).decode()
 
+def text_modify(text):
+    """
+    Function to modify text with some conditions before display.
+    
+    Parameters:
+    - text (str): The input text to be modified.
+    
+    Returns:
+    - str: The modified text with single quotes removed and newlines replaced by spaces.
+    """
+    # Remove single quotes from the beginning and end of the string
+    text = text.strip("'")
+
+    # Replace newline characters with spaces
+    text = text.replace("\n", "<br>")
+    return text
 
 def display_image(content: base64):
     # Start building the HTML content
@@ -22,6 +38,7 @@ def display_image(content: base64):
 
 
 def display_plain_text(content):
+    content = text_modify(content)
     html_content = f"""
     <div style="text-align: center; margin-top: 250px; margin-left: 100px">
         <h1>{content}</h1>
@@ -31,6 +48,7 @@ def display_plain_text(content):
 
 
 def display_yes_no_question(content, language='en'):
+    content = text_modify(content)
     """
     Displays a centered question with static Yes/No buttons.
     
@@ -41,16 +59,16 @@ def display_yes_no_question(content, language='en'):
     <style>
     .button {{
         display: inline-block;
-        width: 200px; /* Makes the button much longer */
+        width: 230px; /* Makes the button much longer */
         padding: 12px 0; /* Vertical padding only since width is fixed */
-        margin: 30px 40px 40px 0; /* Adds space between buttons (right margin) */
+        margin: 30px 50px 40px 0; /* Adds space between buttons (right margin) */
         border: none;
         border-radius: 5px;
         font-weight: bold;
         text-align: center;
         color: white;
         background-color: #007BFF;
-        font-size: 16px;
+        font-size: 30px;
         cursor: pointer;
     }}
     .yes {{
@@ -63,7 +81,7 @@ def display_yes_no_question(content, language='en'):
     <div style="text-align: center; margin-top: 250px; margin-left: 100px">
         <h1>{content}</h1>
         <div>
-            <span class="button yes">{translations['Yes'][language]}</span>
+            <span class="button yes;">{translations['Yes'][language]}</span>
             <span class="button no">{translations['No'][language]}</span>
         </div>
     </div>
@@ -72,6 +90,8 @@ def display_yes_no_question(content, language='en'):
 
 # Function to display the scale question with images
 def display_scale_question(content, order='ascending', min_value=0, max_value=5, language='en'):
+    content = text_modify(content)
+    
     if order == "descending":
         ord = "desc"
     elif order == "ascending": # Default to ascending if not specified (which means the color scale from Red to Green)
@@ -90,7 +110,7 @@ def display_scale_question(content, order='ascending', min_value=0, max_value=5,
         base64_image = get_base64_image(image_path)
         # Add each image with button-like styling
         html_content += f'<img src="data:image/jpeg;base64,{base64_image}" style="width:80px; height:80px; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">'
-
+        
     # Close the HTML divs
     html_content += "</div></div>"
     
