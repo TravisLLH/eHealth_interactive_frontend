@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import redis
 import json
 import logging
+from utils import get_base64_image
 
 app = Flask(__name__)
 
@@ -101,6 +102,21 @@ def post_session_id():
         redis_client.set('current_session_id', str(session_id))
         session_id_store = session_id
         logging.info(f"Session ID set to {session_id}")
+
+        #------------- Set default intro image message for the new/updated session_id ------------
+        default_image_path = 'images/eHealth_12Domains.png'  # Default image for eHealth 12 Domains Intro
+        base64_img = get_base64_image(default_image_path)  
+
+        message_payload = {
+            'session_id': session_id,
+            'type': 'image',
+            'message': base64_img
+        }
+        redis_client.set(f'message:{session_id}', json.dumps(message_payload))
+        data_store[session_id] = message_payload
+        logging.info(f"Default intro image stored for {session_id}")
+        # -----------------------------------------------------------------------------------------
+
         return jsonify({"message": "Session ID set"}), 201
 
 

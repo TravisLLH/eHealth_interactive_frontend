@@ -1,11 +1,19 @@
 import json
 import re
-
+import base64
 import pandas as pd
 import yaml
 from jinja2.filters import do_min
 
 from translation import translations
+
+
+# Helper function to convert local images to base64
+def get_base64_image(image_path):
+    with open(image_path, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
 
 def parse_copd_history(conversation_history: dict):
     """Parse the conversation history into a list of tuples containing the role and utterance.

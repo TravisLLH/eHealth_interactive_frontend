@@ -4,7 +4,7 @@ import redis
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from Controller.VideoController import VideoController
-from question_template import display_yes_no_question, display_scale_question, display_plain_text
+from display_format import display_yes_no_question, display_scale_question, display_plain_text, display_image
 from Config import config
 
 # DEFAULT_DOMAIN = "http://localhost:5050/"
@@ -54,7 +54,8 @@ with st.sidebar:
         st.rerun()
     st.text_input(label="Flask Domain:", key="domain", value=DEFAULT_DOMAIN)
 
-def display_question(response):
+def display_content(response):
+    content_type = response.get('type')
     msg = response.get('message')
     qfmt = response.get('question_format')
     min_v = response.get('MIN')
@@ -67,7 +68,13 @@ def display_question(response):
     elif qfmt == "scale":
         display_scale_question(msg, order, min_v, max_v, language)
     else:
-        display_plain_text(msg)
+        # if image
+        if content_type == "image":
+            display_image(msg)
+            pass
+        # if text
+        else:
+            display_plain_text(msg)
 
 if __name__ == "__main__":
     session_id = st.session_state.user_id
@@ -102,19 +109,19 @@ if __name__ == "__main__":
                     st.error(f"Error parsing video command: {e}")
 
         response = st.session_state.get('response')
-        has_text = response and response.get('type') == "text"
+        has_display_content = response and response.get('type') in ["text", "image"]
 
         if st.session_state.video_controller:
-            if has_text:
+            if has_display_content:
                 col1, col2 = st.columns([3, 1])
                 with col1:
                     # Set a fixed height for the video
                     st.session_state.video_controller.render(playing)  # Default height in VideoController
                 with col2:
-                    display_question(response)
+                    display_content(response)
             else:
                 st.session_state.video_controller.render(playing)
-        elif has_text:
-            display_question(response)
+        elif has_display_content:
+            display_content(response)
 
     st_autorefresh(interval=1000, limit=None, key="autofresh")

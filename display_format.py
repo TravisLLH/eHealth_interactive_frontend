@@ -1,12 +1,24 @@
 import streamlit as st
 import base64
 from translation import translations
+from utils import get_base64_image
 
-# Helper function to convert local images to base64
-def get_base64_image(image_path):
-    with open(image_path, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
+# # Helper function to convert local images to base64
+# def get_base64_image(image_path):
+#     with open(image_path, "rb") as f:
+#         data = f.read()
+#     return base64.b64encode(data).decode()
+
+
+def display_image(content: base64):
+    # Start building the HTML content
+    html_content = f"""
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
+        <img src="data:image/jpeg;base64,{content}" style="width:65%; height:auto; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">
+    </div>
+    """
+    # Render the HTML in Streamlit
+    st.markdown(html_content, unsafe_allow_html=True)
 
 
 def display_plain_text(content):
@@ -59,7 +71,7 @@ def display_yes_no_question(content, language='en'):
     st.markdown(html_content, unsafe_allow_html=True)
 
 # Function to display the scale question with images
-def display_scale_question(content, order='ascending', min_value, max_value, language='en'):
+def display_scale_question(content, order='ascending', min_value=0, max_value=5, language='en'):
     if order == "descending":
         ord = "desc"
     elif order == "ascending": # Default to ascending if not specified (which means the color scale from Red to Green)

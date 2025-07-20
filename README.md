@@ -103,6 +103,15 @@ Purpose: Send different types of content (video, scale questions, yes/no questio
 }
 ```
 
+#### Case 4: Image
+```
+{
+    "session_id": "10",
+    "type": "image",
+    "message": <Base64_Strings>
+}
+```
+
 
 <br>
 
