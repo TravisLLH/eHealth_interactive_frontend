@@ -90,8 +90,15 @@ if __name__ == "__main__":
                     st.session_state.response = new_response
                     if new_response.get('type') == "video":
                         video_url = new_response.get('message')
+
+                        # Extract start_at and end_at if they exist
+                        start_at = new_response.get('start_at')
+                        end_at = new_response.get('end_at')
+                        subtitle = new_response.get('subtitle')
+
                         if video_url and (st.session_state.video_controller is None or st.session_state.video_controller.url != video_url):
-                            st.session_state.video_controller = VideoController(video_url)
+                            st.session_state.video_controller = VideoController(video_url, start_at=start_at, end_at=end_at, subtitle=subtitle)
+
                     else:
                         st.session_state.video_controller = None
             except json.JSONDecodeError as e:

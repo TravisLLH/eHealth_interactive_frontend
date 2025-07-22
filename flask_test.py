@@ -28,18 +28,34 @@ def post_message():
     session_id = data['session_id']
     message_payload = {
         'session_id': session_id,
+        'message': data['message'],
         'type': data.get('type'),
         'language': data.get('language', 'en'),  # Default to English if not provided
         'question_format': data.get('question_format'),
+        # Scale specific fields
         'order': data.get('order'),
         'MIN': data.get('MIN'),
         'MAX': data.get('MAX'),
-        'message': data['message']
+        # Video specific fields
+        'start_at': data.get('start_at'),  # Optional field for video start time
+        'end_at': data.get('end_at'),       # Optional field for video end time
+        'subtitle': data.get('subtitle', True)  # Default to True if not provided
     }
-
     redis_client.set(f'message:{session_id}', json.dumps(message_payload))
     data_store[session_id] = message_payload
     logging.info(f"Message stored for {session_id}")
+
+    # When a new message is posted, always reset the video command to 'stop'.
+    # This prevents a new video from auto-playing based on a previous command.
+    stop_command_payload = {
+        'session_id': session_id,
+        'start_or_stop': False,
+        'move_to': None
+    }
+    redis_client.set(f'video_command:{session_id}', json.dumps(stop_command_payload))
+    video_command_store[session_id] = stop_command_payload
+    logging.info(f"Video command for {session_id} has been reset to 'stop'.")
+
     return jsonify({"message": "Message stored"}), 201
 
 
@@ -56,16 +72,30 @@ def get_message(session_id):
 
 @app.route('/post_video_command', methods=['POST'])
 def post_video_command():
+    """
+    This endpoint allows clients to send video control commands for a specific session.
+    Commands can include:
+    1. Starting or stopping the video
+    2. Directing the video to a specific timestamp
+    """
+
     data = request.get_json()
     if not data or 'session_id' not in data or 'start_or_stop' not in data:
         logging.error("Invalid video_command request")
         return jsonify({"error": "session_id and start_or_stop required"}), 400
 
-    session_id = data['session_id']
-    start_or_stop = data['start_or_stop']
+    session_id = data.get('session_id')
+    start_or_stop = data.get('start_or_stop', None)
+    move_to = data.get('move_to', None)   # Testing
+
+    if move_to is None and start_or_stop is None:
+        logging.error("Invalid video_command request: both start_or_stop and move_to are None")
+        return jsonify({"error": "start_or_stop or move_to required"}), 400
+
     command_payload = {
         'session_id': session_id,
-        'start_or_stop': start_or_stop
+        'start_or_stop': start_or_stop,
+        'move_to': move_to   # Testing
     }
 
     logging.info(f"Video command for {session_id}: {'Start' if start_or_stop else 'Stop'}")
@@ -125,6 +155,15 @@ def get_session_id():
     sid = redis_client.get('current_session_id') or session_id_store
     return jsonify({"session_id": sid}), 200
 
+
+
+
+## Video Control API
+def get_video_timestamp(session_id):
+    pass
+
+def post_video_timestamp(session_id, timestamp):
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5050)

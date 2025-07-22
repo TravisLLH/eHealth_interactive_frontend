@@ -55,10 +55,14 @@ Purpose: Send different types of content (video, scale questions, yes/no questio
 #### Case 1: Video
 ```
 {
-    "session_id": "10", 
+    "session_id": "199", 
     "type": "video",
+    "start_at": 10,    //  seconds OR ‘hms’ format
+    "end_at": 30,      //  seconds OR ‘hms’ format
+    "subtitle": true,  // default true
     "message": "https://www.youtube.com/watch?v=_kGESn8ArrU&ab_channel=GlobalTriathlonNetwork"
 }
+
 ```
 
 
