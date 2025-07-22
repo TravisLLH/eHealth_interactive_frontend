@@ -4,7 +4,7 @@ import redis
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from Controller.VideoController import VideoController
-from display_format import display_yes_no_question, display_scale_question, display_plain_text, display_image
+from display_format import display_yes_no_question, display_scale_question, display_plain_text, display_image, display_gif
 from Config import config
 
 # DEFAULT_DOMAIN = "http://localhost:5050/"
@@ -68,11 +68,13 @@ def display_content(response):
     elif qfmt == "scale":
         display_scale_question(msg, order, min_v, max_v, language)
     else:
-        # if image
+        # image
         if content_type == "image":
             display_image(msg)
-            pass
-        # if text
+        # gif
+        elif content_type == "gif":
+            display_gif(msg)
+        # text
         else:
             display_plain_text(msg)
 
@@ -116,7 +118,7 @@ if __name__ == "__main__":
                     st.error(f"Error parsing video command: {e}")
 
         response = st.session_state.get('response')
-        has_display_content = response and response.get('type') in ["text", "image"]
+        has_display_content = response and response.get('type') in ["text", "image", "gif"]
 
         if st.session_state.video_controller:
             if has_display_content:

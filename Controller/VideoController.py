@@ -107,8 +107,6 @@ class VideoController:
     Stateless controller for the video player using streamlit-elements.
     """
     def __init__(self, url: str, key_prefix: str = "video_controller", start_at: str = None, end_at: str = None, subtitle=True):
-        print(f"substitle: {subtitle}")
-
         self.start_at = start_at if isinstance(start_at, int) else convert_time_to_seconds(start_at)
         self.end_at = end_at if isinstance(end_at, int) else convert_time_to_seconds(end_at)
 
@@ -134,8 +132,6 @@ class VideoController:
                     "cc_lang_pref": "en"  # Set default caption language to English. [1]
                 }
             }
-
-            print(f"youtube_config['playerVars']['cc_load_policy']: {youtube_config['playerVars']['cc_load_policy']}")
 
             media.Player(
                 url=self.url,

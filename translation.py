@@ -27,5 +27,6 @@ translations = {
     'return_questionnaire': {'en': 'Return Questionnaire', 'zh': '返回問卷'},
     'score_details': {'en': 'Score Details', 'zh': '詳細評分'},
     'check_result': {'en': 'Check Result', 'zh': '查看結果'},
-    'main_page': {'en': 'Main Page', 'zh': '主頁'}
+    'main_page': {'en': 'Main Page', 'zh': '主頁'},
+    'please_wait': {'en': 'Please Wait', 'zh': '請稍候'},
 }

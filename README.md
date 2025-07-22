@@ -116,6 +116,15 @@ Purpose: Send different types of content (video, scale questions, yes/no questio
 }
 ```
 
+#### Case 4: GIF (Currently only accepts "please wait" message)
+```
+{
+    "session_id": "10",
+    "type": "gif",
+    "message": "please wait"
+}
+```
+
 
 <br>
 

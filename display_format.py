@@ -9,7 +9,7 @@ from utils import get_base64_image
 #         data = f.read()
 #     return base64.b64encode(data).decode()
 
-def text_modify(text):
+def text_modify(text: str):
     """
     Function to modify text with some conditions before display.
     
@@ -37,7 +37,7 @@ def display_image(content: base64):
     st.markdown(html_content, unsafe_allow_html=True)
 
 
-def display_plain_text(content):
+def display_plain_text(content: str):
     content = text_modify(content)
     html_content = f"""
     <div style="text-align: center; margin-top: 250px; margin-left: 100px">
@@ -47,7 +47,7 @@ def display_plain_text(content):
     st.markdown(html_content, unsafe_allow_html=True)
 
 
-def display_yes_no_question(content, language='en'):
+def display_yes_no_question(content: str, language='en'):
     content = text_modify(content)
     """
     Displays a centered question with static Yes/No buttons.
@@ -89,7 +89,7 @@ def display_yes_no_question(content, language='en'):
     st.markdown(html_content, unsafe_allow_html=True)
 
 # Function to display the scale question with images
-def display_scale_question(content, order='ascending', min_value=0, max_value=5, language='en'):
+def display_scale_question(content: str, order='ascending', min_value=0, max_value=5, language='en'):
     content = text_modify(content)
     
     if order == "descending":
@@ -115,4 +115,31 @@ def display_scale_question(content, order='ascending', min_value=0, max_value=5,
     html_content += "</div></div>"
     
     # Render the HTML in Streamlit
+    st.markdown(html_content, unsafe_allow_html=True)
+
+
+def display_gif(content: str):
+    """
+    Displays a centered GIF image. 
+    ****** Currently supports a default "Please Wait" loading GIF. ******
+    
+    Parameters:
+    - content (base64): The base64 encoded content of the GIF image.
+    """
+
+    # Default Please Wait Loading GIF
+    if "please wait" in content.lower():
+        image_path = "images/gif/pleaseWait.gif"  
+        base64_gif = get_base64_image(image_path)
+
+    else:
+        return
+
+    html_content = f"""
+    <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
+        <img src="data:image/gif;base64,{base64_gif}" style="width:20%; height:auto; margin-top:230px; border:none solid #ccc; border-radius:5px; object-fit:cover;"></img>
+    </div>
+    """
+    # <p style="text-align: center; margin: 10px 0 0 0; font-size: 15px; ">Please Wait</p>
+     
     st.markdown(html_content, unsafe_allow_html=True)
