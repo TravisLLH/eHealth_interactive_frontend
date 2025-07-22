@@ -15,6 +15,19 @@ redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=T
 
 st.set_page_config(layout="wide")
 
+# ---------- CSS to hide the default Streamlit running indicators ----------
+# This is still useful to hide the indicator on the *first* load.
+hide_st_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            .stApp [data-testid="stStatusWidget"] {display: none;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+# ---------------------------------------------------------------------------
+
 def send_session_id():
     session_id = st.session_state.user_id
     url = f"{st.session_state.domain}/post_session_id"
@@ -130,6 +143,7 @@ if __name__ == "__main__":
                     display_content(response)
             else:
                 st.session_state.video_controller.render(playing)
+
         elif has_display_content:
             display_content(response)
 
