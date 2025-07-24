@@ -108,21 +108,22 @@ Purpose: Send different types of content (video, scale questions, yes/no questio
 }
 ```
 
-#### Case 4: Image
+#### Case 4: Image (P.S. command message "intro_page" to call the 12 Domains Main Page)
 ```
 {
     "session_id": "10",
     "type": "image",
     "message": <Base64_Strings>
+    // "message": "intro_page"
 }
 ```
 
-#### Case 4: GIF (Currently only accepts "please wait" message)
+#### Case 4: GIF (Currently only accepts "please_wait" message)
 ```
 {
     "session_id": "10",
     "type": "gif",
-    "message": "please wait"
+    "message": "please_wait"
 }
 ```
 
