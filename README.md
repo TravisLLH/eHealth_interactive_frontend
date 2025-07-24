@@ -100,6 +100,7 @@ Purpose: Send different types of content (video, scale questions, yes/no questio
 {
     "session_id": "10",
     "type": "text",
+    "font_size": 80, // Default 100
     "language": "en",     // en or zh
     "question_format": "plain", // or null
     "message": "Hello, this is testing message"
