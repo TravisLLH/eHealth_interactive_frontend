@@ -139,7 +139,7 @@ class VideoController:
                 controls=True,
                 muted=False,
                 width="100%",
-                height="700px",
+                height="800px",
                 # Add the config parameter here
                 config={"youtube": youtube_config}
             )

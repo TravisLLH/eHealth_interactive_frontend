@@ -3,11 +3,6 @@ import base64
 from translation import translations
 from utils import get_base64_image
 
-# # Helper function to convert local images to base64
-# def get_base64_image(image_path):
-#     with open(image_path, "rb") as f:
-#         data = f.read()
-#     return base64.b64encode(data).decode()
 
 def text_modify(text: str):
     """
@@ -26,22 +21,40 @@ def text_modify(text: str):
     text = text.replace("\n", "<br>")
     return text
 
+
 def display_image(content: base64):
-    # Start building the HTML content
-    html_content = f"""
-    <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
-        <img src="data:image/jpeg;base64,{content}" style="width:65%; height:auto; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">
-    </div>
-    """
+    html_content = ""
+
+    # Secret Command: Intro Page for eHealth 12 Domains
+    if "intro_page" in content.lower():
+        default_image_path = 'images/eHealth_12Domains.png'  # Default image for eHealth 12 Domains Intro
+        base64_intro_img = get_base64_image(default_image_path)  
+    
+        # Start building the HTML content
+        html_content = f"""
+        <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%; margin-top: -20px">
+            <img src="data:image/jpeg;base64,{base64_intro_img}" style="width:65%; height:auto; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">
+        </div>
+        """
+
+    else:    
+        # Start building the HTML content
+        html_content = f"""
+        <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
+            <img src="data:image/jpeg;base64,{content}" style="width:65%; height:auto; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">
+        </div>
+        """
+        
     # Render the HTML in Streamlit
     st.markdown(html_content, unsafe_allow_html=True)
 
 
-def display_plain_text(content: str):
+def display_plain_text(content: str, font_size: int = 100):
+
     content = text_modify(content)
     html_content = f"""
-    <div style="text-align: center; margin-top: 250px; margin-left: 100px">
-        <h1>{content}</h1>
+    <div style="text-align: center; margin-top: 230px; margin-left: 50px">
+        <h1 style="margin-bottom: 30px; font-size: {font_size}px">{content}</h1>
     </div>
     """
     st.markdown(html_content, unsafe_allow_html=True)
@@ -59,8 +72,8 @@ def display_yes_no_question(content: str, language='en'):
     <style>
     .button {{
         display: inline-block;
-        width: 230px; /* Makes the button much longer */
-        padding: 12px 0; /* Vertical padding only since width is fixed */
+        width: 300px; /* Makes the button much longer */
+        padding: 15px 0; /* Vertical padding only since width is fixed */
         margin: 30px 50px 40px 0; /* Adds space between buttons (right margin) */
         border: none;
         border-radius: 5px;
@@ -68,7 +81,7 @@ def display_yes_no_question(content: str, language='en'):
         text-align: center;
         color: white;
         background-color: #007BFF;
-        font-size: 30px;
+        font-size: 45px;
         cursor: pointer;
     }}
     .yes {{
@@ -78,8 +91,8 @@ def display_yes_no_question(content: str, language='en'):
         background-color: #6c757d;  /* Gray for No */
     }}
     </style>
-    <div style="text-align: center; margin-top: 250px; margin-left: 100px">
-        <h1>{content}</h1>
+    <div style="text-align: center; margin-top: 200px; margin-left: 0px">
+        <h1 style="margin-bottom: 30px; font-size: 70px">{content}</h1>
         <div>
             <span class="button yes;">{translations['Yes'][language]}</span>
             <span class="button no">{translations['No'][language]}</span>
@@ -87,6 +100,7 @@ def display_yes_no_question(content: str, language='en'):
     </div>
     """
     st.markdown(html_content, unsafe_allow_html=True)
+
 
 # Function to display the scale question with images
 def display_scale_question(content: str, order='ascending', min_value=0, max_value=5, language='en'):
@@ -99,8 +113,8 @@ def display_scale_question(content: str, order='ascending', min_value=0, max_val
 
     # Start building the HTML content
     html_content = f"""
-    <div style="text-align: center; margin-top: 250px; margin-left: 100px">
-        <h1 style="margin-bottom: 30px;">{content}</h1>  <!-- Increased space below title -->
+    <div style="text-align: center; margin-top: 150px; margin-left: 0px">
+        <h1 style="margin-bottom: 30px; font-size: 70px">{content}</h1>  <!-- Increased space below title -->
         <div style="display: flex; justify-content: center; flex-wrap: wrap;">
     """
     
@@ -109,7 +123,7 @@ def display_scale_question(content: str, order='ascending', min_value=0, max_val
         image_path = f"images/scales/{order}/{i}_{ord}.png"  # Assumes images are in the same directory
         base64_image = get_base64_image(image_path)
         # Add each image with button-like styling
-        html_content += f'<img src="data:image/jpeg;base64,{base64_image}" style="width:80px; height:80px; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">'
+        html_content += f'<img src="data:image/jpeg;base64,{base64_image}" style="width:150px; height:150px; margin:10px; border:none solid #ccc; border-radius:5px; object-fit:cover;">'
         
     # Close the HTML divs
     html_content += "</div></div>"
@@ -127,8 +141,8 @@ def display_gif(content: str):
     - content (base64): The base64 encoded content of the GIF image.
     """
 
-    # Default Please Wait Loading GIF
-    if "please wait" in content.lower():
+    # Secret Command: Please Wait Loading GIF
+    if "please_wait" in content.lower():
         image_path = "images/gif/pleaseWait.gif"  
         base64_gif = get_base64_image(image_path)
 
@@ -137,7 +151,7 @@ def display_gif(content: str):
 
     html_content = f"""
     <div style="display: flex; justify-content: center; align-items: center; height: 100%; width: 100%;">
-        <img src="data:image/gif;base64,{base64_gif}" style="width:20%; height:auto; margin-top:230px; border:none solid #ccc; border-radius:5px; object-fit:cover;"></img>
+        <img src="data:image/gif;base64,{base64_gif}" style="width:30%; height:auto; margin-top:140px; border:none solid #ccc; border-radius:5px; object-fit:cover;"></img>
     </div>
     """
     # <p style="text-align: center; margin: 10px 0 0 0; font-size: 15px; ">Please Wait</p>

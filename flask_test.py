@@ -39,7 +39,9 @@ def post_message():
         # Video specific fields
         'start_at': data.get('start_at'),  # Optional field for video start time
         'end_at': data.get('end_at'),       # Optional field for video end time
-        'subtitle': data.get('subtitle', True)  # Default to True if not provided
+        'subtitle': data.get('subtitle', True),  # Default to True if not provided
+        # Plain Text
+        'font_size': data.get('font_size', 100)  # Default font size for plain text
     }
     redis_client.set(f'message:{session_id}', json.dumps(message_payload))
     data_store[session_id] = message_payload
@@ -133,19 +135,20 @@ def post_session_id():
         session_id_store = session_id
         logging.info(f"Session ID set to {session_id}")
 
-        #------------- Set default intro image message for the new/updated session_id ------------
-        default_image_path = 'images/eHealth_12Domains.png'  # Default image for eHealth 12 Domains Intro
-        base64_img = get_base64_image(default_image_path)  
+        # #------------- Set default intro image message for the new/updated session_id ------------
+        # default_image_path = 'images/eHealth_12Domains.png'  # Default image for eHealth 12 Domains Intro
+        # base64_img = get_base64_image(default_image_path)  
 
         message_payload = {
             'session_id': session_id,
             'type': 'image',
-            'message': base64_img
+            # 'message': base64_img
+            'message': "intro_page"
         }
         redis_client.set(f'message:{session_id}', json.dumps(message_payload))
         data_store[session_id] = message_payload
         logging.info(f"Default intro image stored for {session_id}")
-        # -----------------------------------------------------------------------------------------
+        # # -----------------------------------------------------------------------------------------
 
         return jsonify({"message": "Session ID set"}), 201
 
