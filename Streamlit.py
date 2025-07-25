@@ -5,11 +5,11 @@ import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from Controller.VideoController import VideoController
 from display_format import display_yes_no_question, display_scale_question, display_plain_text, display_image, display_gif
-from Config import config
+# from Config import config
 from datetime import datetime
 
-DEFAULT_DOMAIN = "http://localhost:5050/"
-# DEFAULT_DOMAIN = "http://10.79.26.12:5050/"
+# DEFAULT_DOMAIN = "http://localhost:5050/"
+DEFAULT_DOMAIN = "http://10.79.26.12:5050/"
 
 redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
@@ -42,7 +42,7 @@ st.session_state.setdefault('user_id', None)
 st.session_state.setdefault('domain', DEFAULT_DOMAIN)
 st.session_state.setdefault('response', None)
 st.session_state.setdefault('video_controller', None)
-st.session_state.setdefault('language', config.language)
+st.session_state.setdefault('language', 'en')
 
 # Check for session ID changes from Redis
 current_session_id = redis_client.get('current_session_id')
