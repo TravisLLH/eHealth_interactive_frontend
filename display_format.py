@@ -18,6 +18,7 @@ def text_modify(text: str):
     text = text.strip("'")
 
     # Replace newline characters with spaces
+    text = text.replace("\\n", "<br>")
     text = text.replace("\n", "<br>")
     return text
 
