@@ -83,13 +83,18 @@ def display_content(response):
 
     if qfmt == "yes_no":
         display_yes_no_question(msg, language)
+
     elif qfmt == "scale":
         display_scale_question(msg, order, min_v, max_v, language)
     else:
         if content_type == "image":
             display_image(msg)
         elif content_type == "gif":
-            display_gif(msg)
+            # if video is playing, not displaying a loading GIF
+            if st.session_state.video_controller:
+                return
+            else:
+                display_gif(msg)
         else:
             display_plain_text(msg, font_size)
 
@@ -119,9 +124,13 @@ if __name__ == "__main__":
 
                         if video_url and (st.session_state.video_controller is None or st.session_state.video_controller.url != video_url):
                             st.session_state.video_controller = VideoController(video_url, start_at=start_at, end_at=end_at, subtitle=subtitle)
+                    
+                    elif new_response.get('type') == "gif" and st.session_state.video_controller:
+                        pass
+
                     else:
                         st.session_state.video_controller = None
-                    
+
                     # This is the key: Trigger an immediate rerun to display the new content.
                     st.rerun()
 
@@ -142,19 +151,10 @@ if __name__ == "__main__":
                     st.error(f"Error parsing video command: {e}")
 
         response = st.session_state.get('response')
-        has_display_content = response and response.get('type') in ["text", "image", "gif"]
-
-        # Rendering logic for the page content
+        
         if st.session_state.video_controller:
-            if has_display_content:
-                col1, col2 = st.columns([3, 1])
-                with col1:
-                    st.session_state.video_controller.render(playing)
-                with col2:
-                    display_content(response)
-            else:
-                st.session_state.video_controller.render(playing)
-        elif has_display_content:
+            st.session_state.video_controller.render(playing)
+        else:
             display_content(response)
 
     # The interval is increased to 2000ms (2 seconds) to improve performance.
