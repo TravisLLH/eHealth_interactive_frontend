@@ -3,7 +3,7 @@ import re
 import base64
 import pandas as pd
 import yaml
-from jinja2.filters import do_min
+# from jinja2.filters import do_min
 
 from translation import translations
 
@@ -227,33 +227,12 @@ def encode_image_to_base64(image_path):
         return base64.b64encode(img_file.read()).decode("utf-8")
 
 
-
-
-
-# def set_rubric(language="en", rubric_folder_path="Rubric", rubric_title=None):
-#     import os
-#     import glob
-#     # Use Questionnaire with default language
-#     # rubric_path = f"{os.path.join(config.RUBRIC_PATH, "_".join([config.Rubric_TITLE, language]))}.yaml"
-#     rubric_path = f"{os.path.join(rubric_folder_path, "_".join([rubric_title, language]))}.yaml"
-#     if not os.path.exists(rubric_path):
-#         print(f"rubric_path: {rubric_path}")
-#         raise f"[INFO] Rubric Path does not exist."
-#
-#     # Check if rubric with different language
-#     if not os.path.exists(rubric_path):
-#         # print("Check the corresponding questionnaire with different language...")
-#         all_rubrics = glob.glob("Rubric/*")
-#         # rubric_path = next((rubric for rubric in all_rubrics if config.Rubric_TITLE in rubric), None)
-#         rubric_path = next((rubric for rubric in all_rubrics if rubric_title in rubric), None)
-#
-#     if rubric_path:
-#         with open(rubric_path, "r") as f:
-#             rubric = yaml.safe_load(f)
-#             RUBRIC = rubric["RUBRIC"]
-#     else:
-#         RUBRIC = None
-#         rubric_path = None
-#
-#     return RUBRIC, rubric_path
-
+def convert_time_to_seconds(time_str: str) -> int:
+    """Converts time string like '1m30s' to seconds, or passes an integer through."""
+    if not time_str or not isinstance(time_str, (str, int)): return 0
+    if isinstance(time_str, int): return time_str
+    
+    hours = int(re.search(r'(\d+)h', time_str).group(1)) if 'h' in time_str else 0
+    minutes = int(re.search(r'(\d+)m', time_str).group(1)) if 'm' in time_str else 0
+    seconds = int(re.search(r'(\d+)s', time_str).group(1)) if 's' in time_str else 0
+    return (hours * 3600) + (minutes * 60) + seconds

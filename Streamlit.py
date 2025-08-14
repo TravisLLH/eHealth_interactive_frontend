@@ -4,28 +4,26 @@ import redis
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from Controller.VideoController import VideoController
-from display_format import display_yes_no_question, display_scale_question, display_plain_text, display_image, display_gif
-# from Config import config
+from display_format import get_yes_no_question_html, get_scale_question_html, get_plain_text_html, get_image_html, get_gif_html
+from utils import get_base64_image
 from datetime import datetime
 
-# DEFAULT_DOMAIN = "http://localhost:5050/"
-DEFAULT_DOMAIN = "http://10.79.26.12:5050/"
+DEFAULT_DOMAIN = "http://localhost:5050/"
 
 redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 st.set_page_config(layout="wide")
 
-# ---------- CSS to hide the default Streamlit running indicators ----------
 hide_st_style = """
             <style>
             #MainMenu {visibility: hidden;}
             footer {visibility: hidden;}
             header {visibility: hidden;}
             .stApp [data-testid="stStatusWidget"] {display: none;}
+            html, body, .stApp {overflow: hidden; height: 100vh; margin: 0; padding: 0;}
             </style>
             """
 st.markdown(hide_st_style, unsafe_allow_html=True)
-# ---------------------------------------------------------------------------
 
 def send_session_id():
     session_id = st.session_state.user_id
@@ -36,15 +34,12 @@ def send_session_id():
     except requests.exceptions.RequestException as e:
         st.error(f"Error sending Session ID: {str(e)}")
 
-# Initialize session state keys to avoid errors on first run.
-# This is where we will "remember" the previous response.
 st.session_state.setdefault('user_id', None)
 st.session_state.setdefault('domain', DEFAULT_DOMAIN)
 st.session_state.setdefault('response', None)
 st.session_state.setdefault('video_controller', None)
 st.session_state.setdefault('language', 'en')
 
-# Check for session ID changes from Redis
 current_session_id = redis_client.get('current_session_id')
 if current_session_id and current_session_id != st.session_state.user_id:
     current_domain = st.session_state.domain
@@ -54,12 +49,7 @@ if current_session_id and current_session_id != st.session_state.user_id:
     st.rerun()
 
 with st.sidebar:
-    st.text_input(
-        label="Session ID:",
-        value=st.session_state.user_id or "",
-        key="input_user_id",
-    )
-    # Handle manual session ID input
+    st.text_input(label="Session ID:", value=st.session_state.user_id or "", key="input_user_id")
     if st.session_state.input_user_id and st.session_state.input_user_id != st.session_state.user_id:
         new_id = st.session_state.input_user_id
         current_domain = st.session_state.domain
@@ -68,10 +58,10 @@ with st.sidebar:
         st.session_state.domain = current_domain
         send_session_id()
         st.rerun()
-        
     st.text_input(label="Flask Domain:", key="domain", value=st.session_state.domain)
 
-def display_content(response):
+def get_content_html(response):
+    if not response: return ""
     content_type = response.get('type')
     msg = response.get('message')
     qfmt = response.get('question_format')
@@ -80,27 +70,18 @@ def display_content(response):
     order = response.get('order', 'ascending')
     language = response.get('language', st.session_state.language)
     font_size = response.get('font_size', 100)
-
-    if qfmt == "yes_no":
-        display_yes_no_question(msg, language)
-
-    elif qfmt == "scale":
-        display_scale_question(msg, order, min_v, max_v, language)
+    if qfmt == "yes_no": return get_yes_no_question_html(msg, language)
+    elif qfmt == "scale": return get_scale_question_html(msg, order, min_v, max_v, language)
     else:
-        if content_type == "image":
-            display_image(msg)
-        elif content_type == "gif":
-            # if video is playing, not displaying a loading GIF
-            if st.session_state.video_controller:
-                return
-            else:
-                display_gif(msg)
-        else:
-            display_plain_text(msg, font_size)
+        if content_type == "image": return get_image_html(msg)
+        elif content_type == "gif" and st.session_state.video_controller: return ''
+        elif content_type == "gif": return get_gif_html(msg)
+        else: return get_plain_text_html(msg, font_size)
+
+
 
 if __name__ == "__main__":
     session_id = st.session_state.user_id
-
     if not session_id:
         st.info("Please provide a Session ID to begin.")
     else:
@@ -108,55 +89,50 @@ if __name__ == "__main__":
         if message_data:
             try:
                 new_response = json.loads(message_data)
-                
-                # Compare the new data from Redis with the data from the previous run.
-                # st.session_state.get('response') holds the "previous response".
                 if new_response != st.session_state.get('response'):
-                    # If data is new, update the session state.
                     st.session_state.response = new_response
-                    
-                    # Update the video controller based on the new response.
                     if new_response.get('type') == "video":
                         video_url = new_response.get('message')
                         start_at = new_response.get('start_at')
                         end_at = new_response.get('end_at')
                         subtitle = new_response.get('subtitle')
-
-                        if video_url and (st.session_state.video_controller is None or st.session_state.video_controller.url != video_url):
-                            st.session_state.video_controller = VideoController(video_url, start_at=start_at, end_at=end_at, subtitle=subtitle)
-                    
-                    elif new_response.get('type') == "gif" and st.session_state.video_controller:
-                        pass
-
-                    else:
-                        st.session_state.video_controller = None
-
-                    # This is the key: Trigger an immediate rerun to display the new content.
+                        st.session_state.video_controller = VideoController(
+                            video_url, start_at=start_at, end_at=end_at, subtitle=subtitle
+                        )
+                    elif new_response.get('type') == "gif" and st.session_state.video_controller: pass
+                    else: st.session_state.video_controller = None
                     st.rerun()
+            except json.JSONDecodeError as e: st.error(f"Error parsing message data: {e}")
 
-            except json.JSONDecodeError as e:
-                st.error(f"Error parsing message data: {e}")
-
-        # The rest of the script renders the UI based on the current session state.
-        # This part will now only execute fully when a change is detected.
         playing = False
+        move_to = None
         if st.session_state.video_controller:
             video_data = redis_client.get(f'video_command:{session_id}')
             if video_data:
                 try:
-                    command = json.loads(video_data).get('start_or_stop')
-                    if isinstance(command, bool):
-                        playing = command
-                except (json.JSONDecodeError, AttributeError) as e:
-                    st.error(f"Error parsing video command: {e}")
+                    command = json.loads(video_data)
+                    playing = command.get('start_or_stop', False)
+                    move_to = command.get('move_to')
+                except (json.JSONDecodeError, AttributeError) as e: st.error(f"Error parsing video command: {e}")
 
         response = st.session_state.get('response')
-        
+        loading_command = {}
+        loading_data = redis_client.get(f'loading_gif:{session_id}')
+        if loading_data:
+            try: loading_command = json.loads(loading_data)
+            except json.JSONDecodeError as e: st.error(f"Error parsing loading GIF command: {e}")
+        load_overlay = loading_command.get('load', False)
+
         if st.session_state.video_controller:
             st.session_state.video_controller.render(playing)
         else:
-            display_content(response)
+            content_html = get_content_html(response)
+            st.markdown(f'<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">{content_html}</div>', unsafe_allow_html=True)
 
-    # The interval is increased to 2000ms (2 seconds) to improve performance.
-    # Its only job is to trigger this script so the comparison logic can run.
-    st_autorefresh(interval=2000, limit=None, key="autofresh")
+        if load_overlay:
+            base64_gif = get_base64_image("images/gif/pleaseWait.gif")
+            st.markdown('<style> body::before { content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9998; } </style>', unsafe_allow_html=True)
+            st.markdown(f'<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 9999; pointer-events: none;"> <img src="data:image/gif;base64,{base64_gif}" style="width:30%; height:auto;"> </div>', unsafe_allow_html=True)
+
+    # FIX: Restore the unconditional autorefresh. The JS is now designed to work with it.
+    st_autorefresh(interval=2000, limit=None, key="main_refresh")
